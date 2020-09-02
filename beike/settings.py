@@ -65,7 +65,7 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 #    'beike.pipelines.MongoPipeline': 300,
-    'beike.pipelines.MysqlPipeline': 301,
+#    'beike.pipelines.MysqlPipeline': 301,
     'beike.pipelines.ExcelPipeline': 302,
 }
 

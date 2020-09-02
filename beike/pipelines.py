@@ -12,8 +12,8 @@ name = 'wuhan' # 自定义数据表、集合、文件名
 class MysqlPipeline(object):
 
     def __init__(self):
-        self.db = pymysql.connect(host='localhost', user='root',
-                                  password='6682835', db='mydata', charset='utf8')
+        self.db = pymysql.connect(host='localhost', user='xxxxx',
+                                  password='xxxxx', db='mydata', charset='utf8')
         self.cursor = self.db.cursor()
         global name
         self.table = name

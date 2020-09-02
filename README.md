@@ -5,4 +5,4 @@
 程序会自动将数据保存为 Excel 文件至windows桌面，可自行更改目录。
 默认关闭了 MySQL、MongoDB 存储中间件，如有需要可以连接上自己的数据库。
 
-最终效果如图所示![result](C:\Users\xiaobai\Desktop\github\program\fangzu\result.png)
+最终效果如图所示![result](result.png)

@@ -5,10 +5,10 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import pymysql
-import pymongo
+import pymongo, os
 from openpyxl import Workbook
 
-name = 'wuhan' # 自定义数据表、集合、文件名
+name = 'beijing' # 自定义数据表、集合、文件名
 class MysqlPipeline(object):
 
     def __init__(self):
@@ -24,14 +24,15 @@ class MysqlPipeline(object):
     def process_item(self, item, spider):
         name = item['name']
         quyu = item['quyu']
-        pri = item['price']
-        dan = item['dan']
-        url = item['url']
+        zjia = item['zjia']
+        dan1 = item['dan1']
+        djia = item['djia']
+        dan2 = item['dan2']
         xxxx = item['xxxx']
-        fuli = item['fuli']
-        cf = item['cf']
-        sql = f"insert into {self.table}(标题,区域,价格,单位,链接,详情,优势,跟进) values({repr(name)},{repr(quyu)},{repr(pri)},{repr(dan)},{repr(url)},{repr(xxxx)},{repr(fuli)},{repr(cf)})"
-        #sql = f"insert into {self.table}(标题,区域,价格,单位,链接,详情,优势,跟进) values({repr(name)},{repr(quyu)},{repr(pri)},{repr(dan)},{repr(url)},{repr(xxxx)},{repr(fuli)},{repr(cf)})"
+        star = item['star']
+        tag  = item['tag']
+        url  = item['url']
+        sql = f"insert into {self.table}(标题,小区,总价,单位 万,单价,元/平米,详情,star,标签,链接) values({repr(name)},{repr(quyu)},{repr(zjia)},{repr(dan1)},{repr(djia)},{repr(dan2)}{repr(xxxx)},{repr(star)},{repr(tag)},{repr(url)})"
         self.cursor.execute(sql)  # 执行 SQL
         self.db.commit()
         return item
@@ -58,13 +59,15 @@ class MongoPipeline:
     def process_item(self, item, spider):
         new = {
             '标题': item['name'],
-            '区域': item['quyu'],
-            '价格': item['price'],
-            '单位': item['dan'],
-            '链接': item['url'],
+            '小区': item['quyu'],
+            '总价': item['zjia'],
+            '单位 万': item['dan1'],
+            '单价': item['djia'],
+            '万/平米': item['dan2'],
             '详情': item['xxxx'],
-            '优势': item['fuli'],
-            '跟进': item['cf']
+            'star': item['star'],
+            '标签': item['tag'],
+            '链接': item['url']
         }
         self.collection.insert_one(new)
         return item
@@ -75,19 +78,22 @@ class MongoPipeline:
 
 class ExcelPipeline(object):
     def __init__(self):
+        global name
+        self.path = f'c:/Users/小白/Desktop/{name}.xlsx'
+        if os.path.exists(self.path):
+            os.remove(self.path)
         # 创建excel, 填写表头
         self.wb = Workbook()
         self.ws = self.wb.active
         # 设置表头
-        self.ws.append(['标题', '区域', '价格', '单位', '链接', '详情', '优势', '跟进'])
+        self.ws.append(['标题', '小区', '总价', '万', '单价', '元/平米', '详情', 'star', '标签', '链接'])
 
     def process_item(self, item, spider):
         # 把数据的每一项整理出来
-        line = [item['name'], item['quyu'], item['price'], item['dan'],
-                item['url'], item['xxxx'], item['fuli'], item['cf']]
+        line = [item['name'], item['quyu'], item['zjia'], item['dan1'],
+                item['djia'], item['dan2'], item['xxxx'], item['star'], item['tag'], item['url']]
         # 将数据以行的形式添加到xlsx中
         self.ws.append(line)
         # 保存xlsx文件中
-        global name
-        self.wb.save(f'c:/Users/小白/Desktop/{name}.xlsx')
+        self.wb.save(self.path)
         return item

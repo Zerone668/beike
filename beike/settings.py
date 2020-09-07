@@ -37,10 +37,11 @@ DOWNLOAD_DELAY = random.randint(2,5)
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
-
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    'Referer': 'https://bj.ke.com/',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36'
 }
 
 # Enable or disable spider middlewares
